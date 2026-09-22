@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6b928">
+  <title>Para mi amor, Genesis</title>
+  <style>
+    :root {
+      --night: #142b28;
+      --night-soft: #1c3a33;
+      --cream: #fff8e8;
+      --gold: #f4ba2d;
+      --sun: #ffd95e;
+      --petal: #ffe879;
+      --petal-deep: #f4b51f;
+      --leaf: #7ba657;
+      --ink: #253b31;
+      --white: rgba(255, 253, 242, 0.9);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: Georgia, "Times New Roman", serif;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 56px 24px 74px;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255, 222, 95, 0.2), transparent 23%),
+        radial-gradient(circle at 88% 10%, rgba(143, 184, 95, 0.18), transparent 24%),
+        linear-gradient(135deg, var(--night) 0%, #17352d 62%, #365840 100%);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 34vw;
+      height: 34vw;
+      max-width: 420px;
+      max-height: 420px;
+      border: 1px solid rgba(255, 220, 103, 0.22);
+      border-radius: 50%;
+      transform: rotate(28deg);
+    }
+
+    .hero::before { top: -19%; left: -10%; }
+    .hero::after { right: -11%; bottom: -18%; border-color: rgba(173, 213, 129, 0.2); }
+
+    .stars { position: absolute; inset: 0; pointer-events: none; }
+    .stars span {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--sun);
+      box-shadow: 0 0 16px 4px rgba(255, 220, 103, 0.4);
+      animation: twinkle 3.5s ease-in-out infinite;
+    }
+    .stars span:nth-child(1) { top: 17%; left: 17%; animation-delay: .5s; }
+    .stars span:nth-child(2) { top: 26%; right: 19%; width: 3px; height: 3px; animation-delay: 1.3s; }
+    .stars span:nth-child(3) { bottom: 22%; left: 28%; width: 4px; height: 4px; animation-delay: 2s; }
+    .stars span:nth-child(4) { bottom: 15%; right: 29%; width: 7px; height: 7px; animation-delay: 1s; }
+
+    .hero-content {
+      width: min(960px, 100%);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 370px);
+      gap: clamp(34px, 7vw, 96px);
+      align-items: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 20px;
+      color: var(--sun);
+      font: 700 0.75rem/1.2 Arial, sans-serif;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 680px;
+      margin: 0;
+      color: var(--white);
+      font-size: clamp(3.1rem, 7vw, 6.6rem);
+      font-weight: 400;
+      line-height: 0.92;
+      letter-spacing: -0.045em;
+    }
+
+    h1 em {
+      display: block;
+      position: relative;
+      z-index: 60;
+      color: #fff2a3;
+      font-size: 0.68em;
+      font-style: italic;
+      line-height: 1.1;
+      margin-top: 0.18em;
+      text-shadow: 0 2px 0 rgba(20, 43, 40, .95), 0 0 10px rgba(20, 43, 40, .95), 0 0 20px rgba(20, 43, 40, .7);
+      -webkit-text-stroke: .45px rgba(20, 43, 40, .72);
+    }
+
+    .intro {
+      max-width: 530px;
+      margin: 28px 0 0;
+      color: rgba(255, 253, 242, 0.76);
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      line-height: 1.7;
+    }
+
+    .scroll-hint {
+      display: inline-flex;
+      gap: 11px;
+      align-items: center;
+      margin-top: 34px;
+      color: var(--sun);
+      font: 700 0.74rem Arial, sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .scroll-hint::after { content: "↓"; font-size: 1.25rem; }
+
+    .bouquet {
+      position: relative;
+      width: min(72vw, 340px);
+      aspect-ratio: 1 / 1.12;
+      margin: auto;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .flower { position: absolute; width: 112px; aspect-ratio: 1; }
+    .flower.one { top: 5%; left: 31%; transform: scale(1.12); }
+    .flower.two { top: 34%; left: 2%; transform: scale(.84) rotate(-14deg); }
+    .flower.three { top: 35%; right: 0; transform: scale(.9) rotate(12deg); }
+    .flower.four { bottom: 6%; left: 29%; transform: scale(.72) rotate(-7deg); }
+    .petals { position: absolute; inset: 0; }
+    .petal {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 43%; height: 43%;
+      border-radius: 58% 42% 62% 38%;
+      background: linear-gradient(145deg, #fff3a2 2%, var(--petal) 54%, var(--petal-deep) 100%);
+      transform-origin: 0 0;
+      box-shadow: inset -5px -5px 8px rgba(188, 122, 8, .12);
+    }
+    .petal:nth-child(1) { transform: rotate(0deg) translate(4px, -5px); }
+    .petal:nth-child(2) { transform: rotate(45deg) translate(4px, -5px); }
+    .petal:nth-child(3) { transform: rotate(90deg) translate(4px, -5px); }
+    .petal:nth-child(4) { transform: rotate(135deg) translate(4px, -5px); }
+    .petal:nth-child(5) { transform: rotate(180deg) translate(4px, -5px); }
+    .petal:nth-child(6) { transform: rotate(225deg) translate(4px, -5px); }
+    .petal:nth-child(7) { transform: rotate(270deg) translate(4px, -5px); }
+    .petal:nth-child(8) { transform: rotate(315deg) translate(4px, -5px); }
+    .center {
+      position: absolute; top: 50%; left: 50%;
+      width: 28%; aspect-ratio: 1;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle at 38% 34%, #fff1a2 0 8%, #d78413 11% 28%, #9b5a0e 64%, #71400e 100%);
+      box-shadow: 0 3px 7px rgba(56, 45, 9, .28);
+    }
+
+    .stem {
+      position: absolute;
+      width: 7px;
+      height: 72%;
+      left: 50%;
+      top: 48%;
+      border-radius: 100%;
+      background: var(--leaf);
+      transform: rotate(7deg);
+      transform-origin: top;
+      z-index: -1;
+    }
+    .leaf {
+      position: absolute;
+      width: 24%; height: 12%;
+      background: linear-gradient(145deg, #aacb70, #5f8f4c);
+      border-radius: 100% 0 100% 0;
+      z-index: -1;
+    }
+    .leaf.left { left: 25%; top: 65%; transform: rotate(23deg); }
+    .leaf.right { right: 19%; top: 76%; transform: rotate(144deg); }
+
+    .hero-content {
+      display: block;
+      width: min(980px, 100%);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 50;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .hero-copy .intro { margin-left: auto; margin-right: auto; }
+
+    .scene-wrap {
+      position: relative;
+      width: min(100%, 1100px);
+      margin: -34px auto 0;
+      min-height: 760px;
+      overflow: visible;
+      padding-top: 18px;
+    }
+
+    .flower-field {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-flower {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #fff4a8 0 15%, #f8d652 16% 38%, #d4a52d 39% 100%);
+      box-shadow:
+        0 -16px 0 0 rgba(244, 207, 81, .95),
+        0 16px 0 0 rgba(244, 207, 81, .95),
+        -16px 0 0 0 rgba(244, 207, 81, .9),
+        16px 0 0 0 rgba(244, 207, 81, .9),
+        -12px -12px 0 0 rgba(241, 195, 66, .9),
+        12px -12px 0 0 rgba(241, 195, 66, .9),
+        -12px 12px 0 0 rgba(241, 195, 66, .9),
+        12px 12px 0 0 rgba(241, 195, 66, .9);
+      opacity: .92;
+      animation: float 6s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    .bg-flower::before {
+      content: "";
+      position: absolute;
+      inset: 11px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #fef7c4 0 20%, #d69b1c 22% 100%);
+      box-shadow: 0 0 18px rgba(255, 224, 100, .35);
+    }
+
+    .envelope-scene {
+      position: relative;
+      width: min(100%, 840px);
+      height: clamp(520px, 58vw, 760px);
+      margin: 0 auto;
+      overflow: visible;
+      z-index: 2;
+    }
+
+    .envelope-button {
+      position: absolute;
+      z-index: 10;
+      left: 50%;
+      bottom: 202px;
+      width: min(86vw, 680px);
+      aspect-ratio: 1.7 / 1;
+      padding: 0;
+      border: 2px solid rgba(255, 244, 165, .7);
+      border-radius: 12px;
+      background: linear-gradient(145deg, #f1c75a 0%, #d39b27 52%, #c88918 100%);
+      box-shadow: 0 26px 38px rgba(4, 21, 18, .38), inset 0 2px rgba(255, 244, 165, .7), inset 0 -8px 18px rgba(111, 68, 5, .18);
+      cursor: pointer;
+      transform: translateX(-50%);
+      transition: transform .5s ease, filter .3s ease, bottom .5s ease;
+      overflow: visible;
+      perspective: 900px;
+    }
+
+    .envelope-button::before,
+    .envelope-button::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      transition: opacity .35s ease, visibility .35s ease, transform .8s cubic-bezier(.2, .8, .2, 1), z-index 0s .4s;
+    }
+
+    .envelope-button::before {
+      clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+      background: linear-gradient(145deg, #f8d36d 0%, #e4af36 42%, #d39b27 100%);
+      border-radius: 10px;
+      box-shadow: inset 0 2px rgba(255, 238, 250, .6);
+    }
+
+    .envelope-button::after {
+      clip-path: polygon(0 0, 50% 58%, 100% 0, 50% 74%);
+      background: linear-gradient(155deg, #ffe596 0%, #f5ca5d 40%, #e4af36 100%);
+      border-radius: 10px 10px 0 0;
+      transform-origin: top center;
+      z-index: 2;
+      box-shadow: inset 0 2px rgba(255, 255, 210, .8), 0 7px 12px rgba(70, 45, 8, .22);
+    }
+
+    .envelope-button:hover { filter: brightness(1.08); transform: translateX(-50%) translateY(-4px); }
+    .envelope-button:focus-visible { outline: 3px solid var(--sun); outline-offset: 7px; }
+    .envelope-button.is-open {
+      transform: translateX(-50%) translateY(16px);
+      bottom: 182px;
+    }
+    .envelope-button.is-open::before,
+    .envelope-button.is-open::after {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .envelope-button.is-open::after { transform: rotateX(180deg); z-index: 11; }
+
+    .seal {
+      position: absolute;
+      z-index: 4;
+      top: 50%; left: 50%;
+      display: grid;
+      place-items: center;
+      width: 62px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      color: #8e5d0f;
+      background: radial-gradient(circle at 35% 30%, #fff3a0, #edb92d 65%, #be7b0d);
+      box-shadow: 0 3px 7px rgba(75, 43, 4, .3), 0 0 0 4px rgba(255, 232, 125, .3);
+      font-size: 1.7rem;
+      transform: translate(-50%, -50%);
+      transition: opacity .3s ease;
+    }
+
+    .envelope-button.is-open .seal { opacity: 0; }
+
+    .envelope-caption {
+      position: absolute;
+      z-index: 12;
+      bottom: -22px;
+      left: 0;
+      width: 100%;
+      color: rgba(255, 253, 242, .78);
+      font: 700 .72rem Arial, sans-serif;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .bouquet {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .envelope-scene > .bouquet {
+      display: none;
+    }
+
+    .flower {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      filter: drop-shadow(0 8px 10px rgba(30, 30, 0, .15));
+    }
+
+    .flower:nth-child(1) { top: 8%; left: 58%; transform: translateX(-50%) scale(1.28); }
+    .flower:nth-child(2) { top: 12%; left: 20%; transform: scale(.9) rotate(-18deg); }
+    .flower:nth-child(3) { top: 11%; right: 18%; transform: scale(.9) rotate(18deg); }
+    .flower:nth-child(4) { top: 30%; left: 9%; transform: scale(.82) rotate(-22deg); }
+    .flower:nth-child(5) { top: 28%; right: 9%; transform: scale(.82) rotate(18deg); }
+    .flower:nth-child(6) { top: 48%; left: 19%; transform: scale(.76) rotate(-12deg); }
+    .flower:nth-child(7) { top: 48%; right: 18%; transform: scale(.76) rotate(12deg); }
+    .flower:nth-child(8) { top: 58%; left: 34%; transform: scale(.7) rotate(-16deg); }
+    .flower:nth-child(9) { top: 58%; right: 34%; transform: scale(.7) rotate(16deg); }
+    .flower:nth-child(10) { top: 18%; left: 48%; transform: scale(.72) rotate(-6deg); }
+    .flower:nth-child(11) { bottom: 10%; left: 35%; transform: scale(.72) rotate(-8deg); }
+    .flower:nth-child(12) { bottom: 12%; right: 35%; transform: scale(.7) rotate(8deg); }
+
+    .petals { position: absolute; inset: 0; }
+    .petal {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 43%; height: 43%;
+      border-radius: 58% 42% 62% 38%;
+      background: linear-gradient(145deg, #fff3a2 2%, var(--petal) 54%, var(--petal-deep) 100%);
+      transform-origin: 0 0;
+      box-shadow: inset -5px -5px 8px rgba(188, 122, 8, .12);
+    }
+    .petal:nth-child(1) { transform: rotate(0deg) translate(4px, -5px); }
+    .petal:nth-child(2) { transform: rotate(45deg) translate(4px, -5px); }
+    .petal:nth-child(3) { transform: rotate(90deg) translate(4px, -5px); }
+    .petal:nth-child(4) { transform: rotate(135deg) translate(4px, -5px); }
+    .petal:nth-child(5) { transform: rotate(180deg) translate(4px, -5px); }
+    .petal:nth-child(6) { transform: rotate(225deg) translate(4px, -5px); }
+    .petal:nth-child(7) { transform: rotate(270deg) translate(4px, -5px); }
+    .petal:nth-child(8) { transform: rotate(315deg) translate(4px, -5px); }
+    .center {
+      position: absolute; top: 50%; left: 50%;
+      width: 28%; aspect-ratio: 1;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle at 38% 34%, #fff1a2 0 8%, #d78413 11% 28%, #9b5a0e 64%, #71400e 100%);
+      box-shadow: 0 3px 7px rgba(56, 45, 9, .28);
+    }
+
+    .letter-sheet {
+      position: absolute;
+      z-index: 20;
+      left: 50%;
+      top: 14%;
+      width: min(80vw, 700px);
+      min-height: 420px;
+      padding: clamp(28px, 4vw, 42px);
+      background: #fff0a8;
+      border: 1px solid rgba(180, 136, 22, .25);
+      border-radius: 12px;
+      box-shadow: 0 30px 60px rgba(30, 40, 20, .16);
+      transform: translate(-50%, 35%) rotate(-3deg) scale(.96);
+      opacity: 0;
+      transition: transform .9s cubic-bezier(.2, .8, .2, 1), opacity .5s ease;
+      background-image: none;
+      pointer-events: none;
+    }
+
+    .letter-sheet::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(212, 170, 58, .25);
+      pointer-events: none;
+    }
+
+    .letter-sheet::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .letter-sheet > * { position: relative; z-index: 1; }
+
+    .heart-sprinkle {
+      position: absolute;
+      inset: 22px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(7, 1fr);
+      align-items: center;
+      justify-items: center;
+      z-index: 0 !important;
+      pointer-events: none;
+    }
+
+    .heart-sprinkle span {
+      color: #ed78ae;
+      font-size: clamp(1.1rem, 3vw, 1.8rem);
+      line-height: 1;
+      opacity: .42;
+      text-shadow: 1px 2px 0 rgba(196, 61, 132, .12);
+      transform: rotate(-12deg);
+    }
+
+    .heart-sprinkle span:nth-child(3n) {
+      color: #9b5bb5;
+      font-size: clamp(1.35rem, 3.5vw, 2.1rem);
+      transform: rotate(13deg);
+      opacity: .38;
+    }
+
+    .heart-sprinkle span:nth-child(4n) {
+      color: #d94e99;
+      transform: rotate(5deg) scale(.78);
+      opacity: .35;
+    }
+
+    .letter-sheet.is-visible {
+      opacity: 1;
+      transform: translate(-50%, -8%) rotate(0deg) scale(1);
+    }
+
+    .letter-title {
+      margin: 0 0 12px;
+      color: #1d2d2a;
+      font-size: clamp(2.3rem, 4vw, 3.3rem);
+      line-height: 1;
+      letter-spacing: -.05em;
+    }
+    .letter-title span { color: #d84f91; }
+    .letter-sheet p {
+      margin: 0 0 16px;
+      color: #2b3f35;
+      font-size: clamp(1.02rem, 1.8vw, 1.28rem);
+      line-height: 1.8;
+      text-align: justify;
+    }
+    .letter-sheet .letter-sign {
+      margin-top: 24px;
+      color: #d84f91;
+      font-style: italic;
+      font-size: 1.08rem;
+    }
+    .letter-sheet .signature-line {
+      display: block;
+      margin-top: 8px;
+      color: #16352f;
+      font-size: clamp(1.0rem, 1vw, 1.4rem);
+      font-style: normal;
+    }
+
+    .letter-sheet .letter-heading {
+      color: #d84f91;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .letter-section {
+      display: none;
+    }
+
+    .flower-burst {
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      pointer-events: none;
+      overflow: visible;
+      opacity: 0;
+    }
+
+    .flower-burst.active {
+      opacity: 1;
+    }
+
+    .burst-bouquet {
+      --dx: 0px;
+      --dy: 0px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 90px;
+      height: 130px;
+      transform: translate(-50%, -50%) scale(.1) rotate(0deg);
+      transform-origin: 50% 82%;
+      animation: bouquet-burst 2.4s cubic-bezier(.16, .75, .25, 1) forwards;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .burst-stem {
+      position: absolute;
+      left: 45%;
+      bottom: 4px;
+      width: 7px;
+      height: 90px;
+      border-radius: 100%;
+      background: linear-gradient(90deg, #436e3b, #9bb85a, #3c6637);
+      transform: rotate(var(--stem-tilt, 0deg));
+      transform-origin: bottom center;
+    }
+
+    .burst-leaf {
+      position: absolute;
+      left: 39%;
+      bottom: 42px;
+      width: 34px;
+      height: 14px;
+      border-radius: 100% 0 100% 0;
+      background: linear-gradient(145deg, #b4d574, #4c823f);
+      transform: rotate(var(--leaf-tilt, -25deg));
+    }
+
+    .burst-head {
+      position: absolute;
+      left: var(--head-x, 35px);
+      top: var(--head-y, 10px);
+      width: var(--head-size, 34px);
+      height: var(--head-size, 34px);
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #fff9bc 0 16%, #f8d451 17% 44%, #c98b16 45% 100%);
+      box-shadow:
+        0 -13px 0 #f5cc43,
+        0 13px 0 #f5cc43,
+        -13px 0 0 #edbd2f,
+        13px 0 0 #edbd2f,
+        0 0 10px rgba(255, 226, 104, .7);
+      z-index: 2;
+    }
+
+    .burst-head::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border-radius: 50%;
+      background: #9b5a0e;
+      box-shadow: 0 0 0 3px rgba(255, 238, 135, .45);
+    }
+
+    footer {
+      padding: 28px 24px;
+      color: rgba(255, 253, 242, .64);
+      background: var(--night);
+      text-align: center;
+      font: .75rem Arial, sans-serif;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-13px) rotate(2deg); } }
+    @keyframes twinkle { 0%, 100% { opacity: .32; transform: scale(.75); } 50% { opacity: 1; transform: scale(1.35); } }
+    @keyframes reveal-letter { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bouquet-burst {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.1) rotate(0deg);
+      }
+      18% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(25deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.72) rotate(190deg);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .hero { min-height: 100svh; padding: 62px 14px 48px; }
+      .hero-copy { padding: 0 8px; }
+      h1 { font-size: clamp(2.7rem, 13vw, 4.4rem); }
+      .eyebrow { margin-bottom: 14px; font-size: .65rem; letter-spacing: .18em; }
+      .intro { margin-top: 20px; font-size: .98rem; line-height: 1.55; }
+      .intro { margin-left: auto; margin-right: auto; }
+      .scroll-hint { margin-top: 25px; }
+      .scene-wrap { min-height: 650px; margin-top: -42px; padding-top: 0; }
+      .envelope-scene { width: 100%; height: 470px; margin-top: 8px; }
+      .envelope-button { bottom: 150px; }
+      .envelope-button.is-open { bottom: 132px; }
+      .envelope-caption { bottom: -8px; }
+      .envelope-button { width: min(94vw, 540px); }
+      .letter-sheet { top: 10%; width: min(92vw, 520px); min-height: 430px; padding: 28px 24px; }
+      .letter-sheet p { font-size: 1rem; line-height: 1.58; text-align: left; }
+      .flower { width: 72px; height: 72px; }
+      .burst-bouquet { width: 66px; height: 98px; }
+      .burst-stem { height: 70px; width: 5px; }
+      .burst-leaf { width: 25px; height: 11px; bottom: 32px; }
+      .burst-head { --head-size: 23px; }
+      .burst-head::before { inset: 7px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .bouquet, .stars span { animation: none; }
+      .letter-sheet { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero" aria-labelledby="title">
+      <div class="stars" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div class="hero-content">
+        <div class="hero-copy">
+          <p class="eyebrow">Una pequeña sorpresa para ti</p>
+          <h1 id="title">Mi princesa<em>flores amarillas para ti</em></h1>
+          <p class="intro">Este pequeño ramo guarda un pedacito de todo el cariño, la luz y la felicidad que despiertas en mi corazón.</p>
+        </div>
+
+        <div class="scene-wrap">
+          <span class="bg-flower" style="left:2%; top:18%; width:24px; height:24px; animation-delay:.2s;"></span>
+          <span class="bg-flower" style="left:7%; top:62%; width:22px; height:22px; animation-delay:1.2s;"></span>
+          <span class="bg-flower" style="left:15%; top:8%; width:28px; height:28px; animation-delay:2.4s;"></span>
+          <span class="bg-flower" style="right:11%; top:15%; width:30px; height:30px; animation-delay:1.8s;"></span>
+          <span class="bg-flower" style="right:19%; top:68%; width:26px; height:26px; animation-delay:.9s;"></span>
+          <span class="bg-flower" style="left:22%; top:78%; width:18px; height:18px; animation-delay:2.7s;"></span>
+          <span class="bg-flower" style="left:46%; top:76%; width:20px; height:20px; animation-delay:.6s;"></span>
+          <span class="bg-flower" style="right:34%; top:84%; width:18px; height:18px; animation-delay:3.1s;"></span>
+          <span class="bg-flower" style="left:70%; top:12%; width:18px; height:18px; animation-delay:1.1s;"></span>
+          <span class="bg-flower" style="left:82%; top:45%; width:20px; height:20px; animation-delay:2.2s;"></span>
+          <span class="bg-flower" style="left:88%; top:75%; width:26px; height:26px; animation-delay:1.5s;"></span>
+          <span class="bg-flower" style="left:58%; top:11%; width:28px; height:28px; animation-delay:3.3s;"></span>
+          <span class="bg-flower" style="left:32%; top:14%; width:20px; height:20px; animation-delay:2.9s;"></span>
+          <span class="bg-flower" style="left:62%; top:82%; width:18px; height:18px; animation-delay:2.1s;"></span>
+          <span class="bg-flower" style="right:7%; top:52%; width:22px; height:22px; animation-delay:3.5s;"></span>
+          <span class="bg-flower" style="left:12%; top:46%; width:18px; height:18px; animation-delay:1.9s;"></span>
+          <span class="bg-flower" style="left:3%; top:32%; width:20px; height:20px; animation-delay:2.5s;"></span>
+          <span class="bg-flower" style="right:7%; top:30%; width:17px; height:17px; animation-delay:1.4s;"></span>
+          <span class="bg-flower" style="left:50%; top:8%; width:18px; height:18px; animation-delay:2.8s;"></span>
+          <span class="bg-flower" style="left:78%; top:85%; width:16px; height:16px; animation-delay:3.7s;"></span>
+          <span class="bg-flower" style="left:36%; top:80%; width:16px; height:16px; animation-delay:3.2s;"></span>
+          <span class="bg-flower" style="left:90%; top:30%; width:18px; height:18px; animation-delay:2.6s;"></span>
+
+          <div class="envelope-scene" aria-label="Sobre con flores amarillas y carta emocional">
+            <div id="flower-burst" class="flower-burst" aria-hidden="true"></div>
+            <div class="bouquet" aria-hidden="true">
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+              <div class="flower"><span class="petals"><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i></span><i class="center"></i></div>
+            </div>
+
+            <article class="letter-sheet" id="carta" aria-live="polite">
+              <div class="heart-sprinkle" aria-hidden="true">
+                <span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span>
+                <span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span>
+                <span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span>
+                <span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span>
+                <span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span>
+                <span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span>
+                <span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span>
+              </div>
+              <div class="letter-heading">Una carta escrita con amor</div>
+              <h2 class="letter-title">Para mi <span>princesa</span></h2>
+              <p>Hola amor, se que no es lo que esperabas pero este dia quise regalarte unas flores amarillas y como no pude dartelas en fisico se me ocurrio la idea de dartelas virtual mente.</p>
+              <p>Quiero que sepas que te amooooo mucho mi amor y que estoy muy feliz de tenerte en mi vida y ser parte de la tuya.</p>
+              <p>Sos la persona mas increible, inteligente, hermosa, carismatica y sobreto Amable del mundo mi amor.</p>
+              <p>TE AMOOOOOOOO.</p>
+              <p class="letter-sign">Con mucho amor te regalo estas flores virtuales mi vida, espero te guste.<span class="signature-line">Att: Ariel Andino</span></p>
+            </article>
+
+            <button class="envelope-button" id="open-envelope" type="button" aria-expanded="false" aria-label="Abrir la carta para mi princesa">
+              <span class="seal" aria-hidden="true">♥</span>
+            </button>
+            <span class="envelope-caption" id="envelope-caption">Toca el sobre para abrirlo</span>
+          </div>
+          <div id="flower-field" class="flower-field" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>De Ariel Andino, para Genesis Cruz</footer>
+  <script>
+    const envelope = document.querySelector('#open-envelope');
+    const letter = document.querySelector('#carta');
+    const caption = document.querySelector('#envelope-caption');
+    const flowerField = document.querySelector('#flower-field');
+    const flowerBurst = document.querySelector('#flower-burst');
+
+    const createFlowerField = () => {
+      if (!flowerField) return;
+      flowerField.innerHTML = '';
+
+      for (let i = 0; i < 140; i++) {
+        const flower = document.createElement('span');
+        const size = 12 + Math.random() * 28;
+        flower.className = 'bg-flower';
+        flower.style.width = `${size}px`;
+        flower.style.height = `${size}px`;
+        flower.style.left = `${Math.random() * 100}%`;
+        flower.style.top = `${Math.random() * 100}%`;
+        flower.style.opacity = `${0.7 + Math.random() * 0.45}`;
+        flower.style.animationDelay = `${(Math.random() * 4).toFixed(2)}s`;
+        flower.style.transform = `scale(${0.7 + Math.random() * 1.6})`;
+        flowerField.appendChild(flower);
+      }
+    };
+
+    const triggerBurst = () => {
+      if (!flowerBurst) return;
+      flowerBurst.innerHTML = '';
+      flowerBurst.classList.remove('active');
+
+      const bouquetCount = 28;
+      for (let i = 0; i < bouquetCount; i++) {
+        const bouquet = document.createElement('span');
+        const angle = (Math.PI * 2 * i) / bouquetCount + (Math.random() - .5) * .18;
+        const radius = 150 + Math.random() * 360;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        const stem = document.createElement('i');
+        const leaf = document.createElement('i');
+
+        bouquet.className = 'burst-bouquet';
+        bouquet.style.setProperty('--dx', `${x}px`);
+        bouquet.style.setProperty('--dy', `${y}px`);
+        bouquet.style.setProperty('--delay', `${(Math.random() * 0.35).toFixed(2)}s`);
+        bouquet.style.setProperty('--stem-tilt', `${-20 + Math.random() * 40}deg`);
+        bouquet.style.setProperty('--leaf-tilt', `${-45 + Math.random() * 90}deg`);
+        stem.className = 'burst-stem';
+        leaf.className = 'burst-leaf';
+        bouquet.append(stem, leaf);
+
+        [
+          { x: '20px', y: '22px', size: '31px' },
+          { x: '42px', y: '5px', size: '38px' },
+          { x: '53px', y: '34px', size: '28px' }
+        ].forEach(({ x: headX, y: headY, size }) => {
+          const head = document.createElement('i');
+          head.className = 'burst-head';
+          head.style.setProperty('--head-x', headX);
+          head.style.setProperty('--head-y', headY);
+          head.style.setProperty('--head-size', size);
+          bouquet.appendChild(head);
+        });
+
+        flowerBurst.appendChild(bouquet);
+      }
+
+      void flowerBurst.offsetWidth;
+      flowerBurst.classList.add('active');
+    };
+
+    const openLetter = () => {
+      const isOpen = envelope.classList.toggle('is-open');
+      envelope.setAttribute('aria-expanded', String(isOpen));
+      letter.classList.toggle('is-visible', isOpen);
+      caption.textContent = isOpen ? 'Tu carta está abierta' : 'Toca el sobre para abrirlo';
+
+      if (!isOpen) {
+        window.setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 120);
+      }
+    };
+
+    envelope.addEventListener('click', () => {
+      openLetter();
+      triggerBurst();
+    });
+
+    createFlowerField();
+
+    window.setTimeout(() => {
+      openLetter();
+      triggerBurst();
+    }, 10000);
+  </script>
+</body>
+</html>
